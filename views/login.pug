@@ -1,15 +1,15 @@
 doctype html
-html(lang="en")
+html(lang="ko")
     head
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Document
     body 
         form(action="/login" method="post")
-            input(type="text", placeholder="id")
+            input(type="text", placeholder="id", id ="id")
             p 
-            input(type="text", placeholder="password") 
+            input(type="text", placeholder="password", id ="password") 
             p 
-            input(type="text", placeholder="check password") 
+            input(type="text", placeholder="check password", id ="checkpassword") 
             p 
             input(type="submit", value="submit")
