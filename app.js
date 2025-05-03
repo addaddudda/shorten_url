@@ -42,6 +42,12 @@ app.post('/login', (req, res) => {
     let password = req.body.password;
     db.query('SELECT * FROM users WHERE id=? AND password=?', [id, password], (err, results) => {
         if(err) throw err;
-        res.send('로그인 완료!');
+        else if(results.length > 0){
+            res.send('로그인 완료! <p> <a href="http://localhost:80/">메인으로 돌아가기기</a>')
+        }
+        else{
+            res.send('아이디 또는 비밀번호가 다릅니다 <p> <a href="http://localhost:80/login">로그인 화면으로 돌아가기</a>');
+        }
     })
-})
+}) //만들어야할것: 비밀번호 보기
+// shorten url먼저 개발
