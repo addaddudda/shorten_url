@@ -2,8 +2,7 @@ const express = require('express');
 const app = express();
 const bodyparser = require('body-parser');
 const db = require('./db');
-const bcrypt = require('bcrypt');
-const nanoid = require('nanoid');
+const { nanoid } = require('nanoid');
 app.set('view engine', 'pug');
 app.use(bodyparser.urlencoded({extended:false}));
 app.listen(80, () => {
@@ -58,12 +57,17 @@ app.get('/shorturl', (req, res) => {
 })
 app.post('/shorturl', (req, res) => {
     let url = req.body.url;
-    let shorturl = nanoid(10);
-    db.query('INSERT INTO url (url, shorturl) VALUES (?, ?)' [url, shorturl], (err, results) => {
+    let shorturl = nanoid(10)
+    db.query('INSERT INTO url (url, shorturl) VALUES (?, ?)',  [url, shorturl], (err, results) => {
         if(err) throw err;
-        res.send('줄이기 완료! <p><a href="http://localhost:80/">메인으로 돌아가기</a>');
+        res.send('줄이기 완료! <p>줄인 url: ' + shorturl + '<p><a href="http://localhost:80/">메인으로 돌아가기</a>');
     })
 })
 app.get('/:url', (req, res) => {
-    
+    let url = req.params.url;
+    db.query('SELECT * FROM url WHERE shorturl=?', [url], (err, results) => {
+        if(err) throw err;
+        let nomalurl = results[0].url;
+        res.redirect(nomalurl);
+    })
 })
