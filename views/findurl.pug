@@ -5,7 +5,13 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Document
     body 
-        form(action="/shorturl/#{shortedurl}", method="get")
-            input(type="text", name="shortedurl", placeholder="shorted url code")
+        form(id="shortUrlForm", method="get")
+            input(type="text", name="shortedurl", id="shortedurl", placeholder="shorted url code")
             p 
             input(type="submit", value="submit") 
+        script.
+            // 폼 제출 전에 action URL을 동적으로 변경
+            document.getElementById('shortUrlForm').onsubmit = function() {
+                var shortedurl = document.getElementById('shortedurl').value;
+                this.action = '/shorturl/' + shortedurl;
+            }
