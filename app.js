@@ -69,10 +69,29 @@ app.get('/shorturl', (req, res) => {
 app.post('/shorturl', (req, res) => {
     let url = req.body.url;
     let shorturl = nanoid(10)
+    db.query('SELECT * FROM url WHERE url=?', [url],(err, results) => {
+        if(err) throw err;
+        else if(results.length > 0){
+            res.send('줄이기 완료! <p>줄인 url: http://localhost:80/shorturl/' + results[0].shorturl + '<p><a href="http://localhost:80/">메인으로 돌아가기</a>');
+        }else{
+            db.query('INSERT INTO url (url, shorturl) VALUES (?,?)', [url, shorturl], (err, results) => {
+                res.send('줄이기 완료! <p>줄인 url: http://localhost:80/shorturl/' + shorturl + '<p><a href="http://localhost:80/">메인으로 돌아가기</a>');
+            })
+        }
+    })
+    
+    /** 
     db.query('INSERT INTO url (url, shorturl) VALUES (?, ?)',  [url, shorturl], (err, results) => {
         if(err) throw err;
-        res.send('줄이기 완료! <p>줄인 url: ' + shorturl + '<p><a href="http://localhost:80/">메인으로 돌아가기</a>');
+        db.query('SELECT * FROM url', (err, results) => {
+            if(results[0].url == url){
+                res.send('줄이기 완료! <p>줄인 url: http://localhost:80/shorturl/' + results[0].shorturl + '<p><a href="http://localhost:80/">메인으로 돌아가기</a>');
+            }else{
+                res.send('줄이기 완료! <p>줄인 url: http://localhost:80/shorturl/' + shorturl + '<p><a href="http://localhost:80/">메인으로 돌아가기</a>');
+            }
+        })
     })
+    */
 })
 app.get('/shorturl/:url', (req, res) => {
     let url = req.params.url;
@@ -87,4 +106,4 @@ app.get('/shorturl/:url', (req, res) => {
 })
 app.get('/findurl', (req, res) => {
     res.render('findurl');
-})//
+})
