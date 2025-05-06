@@ -11,7 +11,7 @@ html(lang="en")
             input(type="submit", value="submit") 
         script.
             // 폼 제출 전에 action URL을 동적으로 변경
-            document.getElementById('shortUrlForm').onsubmit = function() {
+            document.getElementById('shortUrlForm').onsubmit = function()  {
                 var shortedurl = document.getElementById('shortedurl').value;
-                this.action = '/shorturl/' + shortedurl;
+                this.action = shortedurl;
             }
